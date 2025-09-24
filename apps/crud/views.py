@@ -7,13 +7,13 @@ from apps.app import db
 crud = Blueprint(
   "crud", # 블루프린트의 이름 지정
   __name__, # 블루프린트가 정의된 모듈명
-  template_folder="templates/crud", # 해당블루프린트와 관련된 템플릿 파일이 있는 폴더
+  template_folder="templates", # 해당블루프린트와 관련된 템플릿 파일이 있는 폴더
   static_folder="static" # 해당블루프린트와 관련된 정적 파일이 있는 폴더
 )
 
 @crud.route("/")
 def index():
-  return render_template("index.html")
+  return render_template("crud/index.html")
 
 @crud.route("/users/new", methods=['GET', 'POST'])
 def create_user():
@@ -32,7 +32,7 @@ def create_user():
 
     return redirect( url_for('crud.users') )
 
-  return render_template('create.html', form=form)
+  return render_template('crud/create.html', form=form)
 
 
 @crud.route('/form/test', methods=['GET', 'POST'])
@@ -42,7 +42,7 @@ def form_test():
     print(request.form.get('email'))
     print(request.form.get('password'))
 
-  return render_template('formtest.html')
+  return render_template('crud/formtest.html')
 
 # 회원 목록 페이지로 이동
 @crud.route('/users')
@@ -52,7 +52,7 @@ def users():
   # users = db.session.query(User).all()
   users = User.query.all()
   
-  return render_template('index.html', users=users)
+  return render_template('crud/index.html', users=users)
 
 @crud.route('/users/<user_id>', methods=['GET', 'POST'])
 def edit_user(user_id):
@@ -69,7 +69,7 @@ def edit_user(user_id):
 
     return redirect( url_for('crud.users') )
 
-  return render_template('edit.html', user=user, form=form)
+  return render_template('crud/edit.html', user=user, form=form)
 
 @crud.route('/users/<user_id>/delete', methods=['POST'])
 def delete_user(user_id):

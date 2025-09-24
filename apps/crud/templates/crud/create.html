@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
+{% extends "crud/base.html" %}
+
+{% block title %}회원가입{% endblock %}
+
+{% block content %}
   <h2>회원가입 페이지</h2>
   <form action="{{ url_for('crud.create_user') }}" method="post" novalidate>
     {{ form.csrf_token }}
@@ -35,5 +32,4 @@
     </p>
 
   </form>
-</body>
-</html>
+{% endblock %}

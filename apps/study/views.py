@@ -35,9 +35,27 @@ def write():
 
   return render_template('study/write.html', form=form)
 
-@study.route('/edit/<int:id>')
+@study.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
   data = Study.query.get(id)
-  form = WriteForm()
+  form = WriteForm(obj = data)
+
+  if form.validate_on_submit():
+    data.subject = form.subject.data
+    data.writer = form.writer.data
+    data.content = form.content.data
+
+    db.session.add(data)
+    db.session.commit()
+
+    return redirect(url_for('study.index'))
   
   return render_template("study/edit.html", data=data, form=form)
+
+@study.route('/delete/<int:id>')
+def delete_data(id):
+  data = Study.query.get(id)
+  db.session.delete(data)
+  db.session.commit()
+
+  return redirect( url_for('study.index') )

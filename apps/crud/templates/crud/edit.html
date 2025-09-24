@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
+{% extends "crud/base.html" %}
+
+{% block title %}수정{% endblock %}
+
+{% block content %}
   <h2>회원 정보 수정페이지</h2>
 
   <form action="{{ url_for('crud.edit_user', user_id=user.id) }}" method="post" novalidate>
@@ -41,5 +38,4 @@
     <input type="submit" value="삭제">
   </form>
 
-</body>
-</html>
+{% endblock %}
