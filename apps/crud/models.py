@@ -6,7 +6,7 @@ from datetime import datetime
 class User(db.Model):
   # db에 생성되는 테이블명 지정
   __tablename__ = "users"
-
+  
   # 컬럼들...
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(255), index=True)

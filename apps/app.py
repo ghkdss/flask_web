@@ -23,7 +23,9 @@ def create_app():
   Migrate(app, db)
 
   from apps.crud import views as crud_views
+  from apps.study import views as study_views
 
   app.register_blueprint(crud_views.crud, url_prefix='/crud')
+  app.register_blueprint(study_views.study, url_prefix="/study")
 
   return app
