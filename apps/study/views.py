@@ -34,3 +34,10 @@ def write():
     return redirect( url_for('study.index') )
 
   return render_template('study/write.html', form=form)
+
+@study.route('/edit/<int:id>')
+def edit(id):
+  data = Study.query.get(id)
+  form = WriteForm()
+  
+  return render_template("study/edit.html", data=data, form=form)

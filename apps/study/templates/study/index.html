@@ -18,7 +18,11 @@
     {% for st in study %}
     <tr>
       <td>{{ st.id }}</td>
-      <td>{{ st.subject }}</td>
+      <td>
+        <a href="{{ url_for('study.edit', id=st.id) }}">
+        {{ st.subject }}
+        </a>
+      </td>
       <td>{{ st.writer }}</td>
     </tr>
     {% endfor %}
