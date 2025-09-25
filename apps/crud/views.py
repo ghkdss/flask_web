@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import login_required
 
 from apps.crud.forms import UserForm
 from apps.crud.models import User
@@ -46,6 +47,7 @@ def form_test():
 
 # 회원 목록 페이지로 이동
 @crud.route('/users')
+@login_required
 def users():
   # 데이터베이스에서 전체 레코드를 꺼내오기
   # select * from users
@@ -55,6 +57,7 @@ def users():
   return render_template('crud/index.html', users=users)
 
 @crud.route('/users/<user_id>', methods=['GET', 'POST'])
+@login_required
 def edit_user(user_id):
   form = UserForm()
   user = User.query.filter_by(id = user_id).first()

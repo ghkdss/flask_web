@@ -24,3 +24,19 @@ class SignUpForm(FlaskForm):
     ]
   )
   submit = SubmitField('가입')
+
+class LoginForm(FlaskForm):
+  username = StringField(
+    "사용자명",
+    validators=[
+      DataRequired('사용자명은 필수입니다.'),
+      Length(3, 20, "3~20글자까지 가능합니다.")
+    ]
+  )
+  password = PasswordField(
+    "비밀번호",
+    validators=[
+      DataRequired('비밀번호는 필수')
+    ]
+  )
+  submit = SubmitField('로그인')
