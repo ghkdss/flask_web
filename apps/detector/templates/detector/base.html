@@ -12,6 +12,13 @@
     <div class="container">
         <a class="navbar-brand " href="{{ url_for('detector.index') }}">detector</a>
         
+        <div>
+          <form action="{{ url_for('detector.search') }}">
+            <input type="text" name="search" placeholder="검색어 입력 후 엔터">
+          </form>
+        </div>
+
+
         <ul class="navbar-nav">
             {% if current_user.is_authenticated %}
             <li class="nav-item">
@@ -28,6 +35,9 @@
                 <a class="nav-link" href="{{ url_for('auth.login') }}">로그인</a>
             </li>
             {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('board.index') }}">게시판</a>
+            </li>
         </ul>
     </div>
   </nav>
