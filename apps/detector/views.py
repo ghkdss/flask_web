@@ -25,8 +25,21 @@ def index():
   user_images = db.session.query(User, UserImage)\
                           .join(UserImage)\
                           .filter(User.id == UserImage.user_id).all()
+  
+  user_image_tag_dict = {}
 
-  return render_template("detector/index.html", user_images=user_images)
+  for user_image in user_images:
+    user_image_tags = db.session.query(UserImageTag)\
+        .filter(UserImageTag.user_image_id == user_image.UserImage.id)\
+        .all()
+    user_image_tag_dict[user_image.UserImage.id] = user_image_tags
+
+
+  return render_template(
+    "detector/index.html", 
+    user_images=user_images, 
+    user_image_tag_dict=user_image_tag_dict
+  )
 
 @dt.route('/images/<path:filename>')
 def image_file(filename):
@@ -86,6 +99,8 @@ def draw_lines(c1, c2, result_image, line, color):
 
 # 이미지에 라벨 넣는 함수
 def draw_texts(result_image, line, c1, cv2, color, labels, label):
+  # labels : 진짜 물체 이름들이 있는 리스트
+  # label : ai가 감지한 물체이름 결과(숫자)
   display_text = labels[label]
   font = max(line - 1, 1)
   t_size = cv2.getTextSize(display_text, 0, fontScale=line/3, thickness=font)[0]
@@ -124,7 +139,7 @@ def exec_detect(target_image_path):
   tags = []
   result_image = np.array( image.copy() )
 
-  for box, label, score in zip( output['boxes'], output["labels"], output["socres"] ):
+  for box, label, score in zip( output['boxes'], output["labels"], output["scores"] ):
     if score > 0.5 and labels[label] not in tags:
       color = make_color(labels)
       line = make_line(result_image)
