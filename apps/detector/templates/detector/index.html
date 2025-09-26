@@ -20,10 +20,20 @@
   <form action="{{ url_for('detector.detect', image_id=user_image.UserImage.id) }}" method="post">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     
-    {% if current_user.id == user_image.User.id and user_image.UserImage.is_detected == False %}
+    {% if current_user.id == user_image.User.id and user_image.is_detected == False %}
     <input class="btn btn-primary" type="submit" value="감지">
     {% else %}
     <input class="btn btn-primary" type="submit" value="감지" disabled>
+    {% endif %}
+  </form>
+  <!-- 삭제버튼 -->
+  <form action="{{ url_for('detector.delete_image', image_id=user_image.UserImage.id) }}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    
+    {% if current_user.id == user_image.User.id %}
+    <input class="btn btn-danger" type="submit" value="삭제">
+    {% else %}
+    <input class="btn btn-danger" type="submit" value="삭제" disabled>
     {% endif %}
   </form>
 

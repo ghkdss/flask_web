@@ -34,7 +34,6 @@ def index():
         .all()
     user_image_tag_dict[user_image.UserImage.id] = user_image_tags
 
-
   return render_template(
     "detector/index.html", 
     user_images=user_images, 
@@ -223,3 +222,26 @@ def test():
   cv2.waitKey(0)
 
   return ""
+
+
+
+@dt.route('/images/delete/<image_id>', methods=['POST'])
+@login_required
+def delete_image(image_id):
+  try:
+    # tags먼저 삭제
+    db.session.query(UserImageTag)\
+              .filter(UserImageTag.user_image_id == image_id)\
+              .delete()
+    # image정보 삭제
+    db.session.query(UserImage)\
+              .filter(UserImage.id == image_id)\
+              .delete()
+    
+    db.session.commit()
+  except Exception as e:
+    flash('이미지 삭제 중 오류 발생')
+    print(e) # current_app.logger.error(e)
+    db.session.rollback()
+  
+  return redirect( url_for('detector.index') )
