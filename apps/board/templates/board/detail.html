@@ -20,8 +20,25 @@
 <div class="mb-3">
   {% if current_user.id == board.user.id %}
   <a class="btn btn-warning" href="{{ url_for('board.edit', board_id=board.id) }}">수정</a>
-  <a class="btn btn-danger" href="">삭제</a>
+  <a class="btn btn-danger" href="{{ url_for('board.delete', board_id=board.id) }}">삭제</a>
   {% endif %}
 </div>
+
+<hr>
+
+<div>
+  <h5>댓글</h5>
+  <div>
+    <p>댓글목록 표시해줄 영역</p>
+  </div>
+  <div>
+    <form action="{{ url_for('reply.new_reply', board_id=board.id) }}" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <textarea class="form-control" name="content" rows="3"></textarea>
+      <input class="btn btn-primary" type="submit" value="댓글등록">
+    </form>
+  </div>
+</div>
+
 
 {% endblock %}

@@ -57,3 +57,12 @@ def edit(board_id):
     return redirect(url_for('board.index'))
   
   return render_template('board/edit.html', form=form, board=board)
+
+
+@bp.route('/delete/<board_id>')
+def delete(board_id):
+  board = Board.query.get(board_id)
+  db.session.delete(board)
+  db.session.commit()
+
+  return redirect(url_for('board.index'))

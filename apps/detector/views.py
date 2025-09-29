@@ -21,7 +21,6 @@ dt = Blueprint(
 
 @dt.route('/')
 def index():
-
   user_images = db.session.query(User, UserImage)\
                           .join(UserImage)\
                           .filter(User.id == UserImage.user_id).all()
