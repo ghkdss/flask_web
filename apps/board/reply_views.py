@@ -12,10 +12,16 @@ reply = Blueprint(
 @reply.route('/new/<board_id>', methods=['POST'])
 def new_reply(board_id):
   content = request.form['content']
-  reply = Reply(
-    content=content, user_id=current_user.id, board_id=board_id
-  )
-  db.session.add(reply)
+  # reply = Reply(
+  #   content=content, user_id=current_user.id, board_id=board_id
+  # )
+  # db.session.add(reply)
+  # db.session.commit()
+
+  board = Board.query.get(board_id)
+  reply = Reply(content=content, user_id=current_user.id)
+  board.reply_list.append(reply)
+
   db.session.commit()
 
   return redirect(url_for('board.detail', board_id=board_id))
