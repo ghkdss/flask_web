@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, url_for
+from flask import Blueprint, request, redirect, url_for, jsonify
 from flask_login import current_user
 
 from apps.app import db
@@ -25,3 +25,17 @@ def new_reply(board_id):
   db.session.commit()
 
   return redirect(url_for('board.detail', board_id=board_id))
+
+
+# @reply.route('/<reply_id>', methods=['DELETE'])
+@reply.delete('/<reply_id>')
+def delete_reply(reply_id):
+  reply = Reply.query.get(reply_id)
+
+  try:
+    db.session.delete(reply)
+    db.session.commit()
+    return jsonify({'message' : '댓글 삭제 완료'}), 200
+  except Exception:
+    db.session.rollback()
+    return jsonify({'message' : '댓글 삭제 실패'}), 500
