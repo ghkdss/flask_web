@@ -39,3 +39,17 @@ def delete_reply(reply_id):
   except Exception:
     db.session.rollback()
     return jsonify({'message' : '댓글 삭제 실패'}), 500
+  
+
+@reply.put('/<reply_id>')
+def edit_reply(reply_id):
+  data = request.json
+  
+  try:
+    reply = Reply.query.get(reply_id)
+    reply.content = data.get('content')
+    db.session.commit()
+    return jsonify( {'status':'success', 'message':'댓글 수정 완료'} ), 200
+  except Exception:
+    db.session.rollback()
+    return jsonify( {'status':'error', 'message':'댓글 수정 실패'} ), 500

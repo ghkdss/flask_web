@@ -99,7 +99,31 @@
 
     // 저장 버튼 눌렀을 때 실행할 코드
     if(e.target.classList.contains('save-reply-btn')) {
-      alert('저장버튼')
+      const csrfToken = document.querySelector('input[name="csrf_token"]').value
+      const newContent = document.querySelector(`#content-edit-${replyId}`).value
+
+      fetch(`/reply/${replyId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type' : 'application/json',
+          'X-CSRFToken' : csrfToken
+        },
+        body: JSON.stringify( {content: newContent} )
+      }).then(response => response.json())
+      .then(data => {
+        alert(data.message)
+
+        if(data.status == 'success') {
+          document.querySelector(`#content-text-${replyId}`).innerText = newContent
+          document.querySelector(`#content-text-${replyId}`).classList.remove('d-none')
+          document.querySelector(`#reply-${replyId} .edit-reply-btn`).classList.remove('d-none')
+
+          document.querySelector(`#content-edit-${replyId}`).classList.add('d-none')
+          e.target.classList.add('d-none')
+        }
+
+      })
+
     }
 
   })
